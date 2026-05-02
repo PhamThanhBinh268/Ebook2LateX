@@ -1,0 +1,12 @@
+[
+    {"latex": "E = mc^2"},
+    {"latex": "a^2 + b^2 = c^2"},
+    {"latex": "\\int_{a}^{b} x^2 dx = \\frac{b^3 - a^3}{3}"},
+    {"latex": "\\sum_{i=1}^{n} i = \\frac{n(n+1)}{2}"},
+    {"latex": "\\sin^2(\\theta) + \\cos^2(\\theta) = 1"},
+    {"latex": "e^{i\\pi} + 1 = 0"},
+    {"latex": "F = ma"},
+    {"latex": "x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}"},
+    {"latex": "\\lim_{x \\to 0} \\frac{\\sin x}{x} = 1"},
+    {"latex": "A = \\pi r^2"}
+]

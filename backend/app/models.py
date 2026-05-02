@@ -24,6 +24,8 @@ class User(Base):
 
     # Quan hệ: Một người dùng có thể tải lên nhiều tài liệu
     documents = relationship("Document", back_populates="owner")
+    # Quan hệ: Người dùng có thể yêu thích nhiều công thức
+    favorites = relationship("UserFavorites", back_populates="user", cascade="all, delete-orphan")
 
 class Document(Base):
     __tablename__ = 'documents'
@@ -34,6 +36,7 @@ class Document(Base):
     file_path_url = Column(Text, nullable=False)
     upload_date = Column(DateTime(timezone=True), server_default=func.now())
     status = Column(String(50), default='Pending') # Pending, Processed, Error
+    version = Column(Integer, default=1)
 
     # Quan hệ ngược lại với User
     owner = relationship("User", back_populates="documents")
@@ -55,6 +58,8 @@ class FormulaEntry(Base):
     document = relationship("Document", back_populates="formulas")
     # Quan hệ: Một công thức có thể có nhiều log
     logs = relationship("Log", back_populates="formula", cascade="all, delete-orphan")
+    # Quan hệ: Những người dùng đã yêu thích công thức này
+    favorited_by = relationship("UserFavorites", back_populates="formula", cascade="all, delete-orphan")
 
 class Log(Base):
     __tablename__ = 'logs'
@@ -70,3 +75,15 @@ class Log(Base):
 
     # Quan hệ ngược lại với FormulaEntry
     formula = relationship("FormulaEntry", back_populates="logs")
+
+class UserFavorites(Base):
+    __tablename__ = 'user_favorites'
+    
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    user_id = Column(UUID(as_uuid=True), ForeignKey('users.user_id', ondelete='CASCADE'), nullable=False)
+    formula_id = Column(UUID(as_uuid=True), ForeignKey('formula_entries.id', ondelete='CASCADE'), nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    # Quan hệ
+    user = relationship("User", back_populates="favorites")
+    formula = relationship("FormulaEntry", back_populates="favorited_by")
